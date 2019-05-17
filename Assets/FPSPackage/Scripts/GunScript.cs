@@ -20,6 +20,7 @@ public class GunScript : MonoBehaviour {
         //audioSource.clip = gunSound;
         //quaternion.x = GameObject.Find("ktb00").transform.rotation.x;  //刀の初期角度格納
         //quaternion.y = GameObject.Find("ktb00").transform.rotation.y;  //刀の初期角度格納
+        GetComponent<BoxCollider>().enabled = false;  //刀を動かしているときだけダメージを与える。
     }
 
     // ゲームの1フレームごとに呼ばれるメソッド
@@ -33,19 +34,22 @@ public class GunScript : MonoBehaviour {
 
             if (isAttack)
             {
+
                 if (flame < 5)
                 {
                     transform.Rotate(new Vector3(0, 0, -15));
-                    transform.position -= new Vector3(0, 0.1f, 0);
+                    transform.position -= new Vector3(0, 0.02f, 0);
                 }
                 else if (flame < 10)
                 {
+                    GetComponent<BoxCollider>().enabled = false;
                     transform.Rotate(new Vector3(0, 0, 15));
-                    transform.position += new Vector3(0, 0.1f, 0);
+                    transform.position += new Vector3(0, 0.02f, 0);
                 }
                 else
                 {
                     isAttack = false;
+                    
                 }
 
                 flame++;
@@ -57,6 +61,7 @@ public class GunScript : MonoBehaviour {
                 {
 
                     isAttack = true;
+                    GetComponent<BoxCollider>().enabled = true;  //斬ってる間だけ刀に触れた敵にダメージを与えられる
                     flame = 0;
                     //if (playerScript.reloadCount > 0)
                     //{

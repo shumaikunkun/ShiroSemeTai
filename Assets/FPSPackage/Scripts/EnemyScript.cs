@@ -5,23 +5,29 @@ using UnityEngine.UI;
 public class EnemyScript : MonoBehaviour {
     public Canvas canvas;
     public Slider slider;
-    public const int maxEnemyHP = 3;
-
+    
+    public int maxEnemyHP = 3;
 	public int enemyHP = 3; // 敵の体力
-	public GameObject Bomb; // 爆発のオブジェクト
+	//public GameObject Bomb; // 爆発のオブジェクト
 
     public Vector3 playerPos;
     public Vector3 enemyPos;
-    public Vector2 playerPos2d;
-    public Vector2 enemyPos2d;
+    public float distance;
 
     public GameObject allow;
 
     Transform playerTransform;
 
+    float timer;
+
+    public GameObject rice;
+
     private void Start()
     {
         playerTransform = GameObject.Find("Player").transform;
+        if (this.gameObject.name == "MovingEnemy1") { maxEnemyHP = enemyHP = 5; }
+        if (this.gameObject.name == "MovingEnemy2") { maxEnemyHP = enemyHP = 10; }
+
     }
 
     void Update()
@@ -29,19 +35,18 @@ public class EnemyScript : MonoBehaviour {
         //transform.rotation = Camera.main.transform.rotation;
         //カメラの方向に向かせる。
         canvas.transform.LookAt(playerTransform);
-        playerPos = GameObject.Find("Player").transform.position;
-        enemyPos = transform.position;
-        playerPos2d = new Vector2(playerPos.x, playerPos.z);
-        enemyPos2d = new Vector2(enemyPos.x, enemyPos.z);
+        playerPos = GameObject.Find("Player").transform.position;  //プレイヤーの座標
+        enemyPos = transform.position;  //敵の座標
+        distance = Vector2.Distance(playerPos, enemyPos);  //敵とプレイヤーとの距離
+        timer += Time.deltaTime;
 
-        if (Input.GetKey(KeyCode.Z))
+        if (timer >= 10 && distance < 50)
         {
-            var obj = Instantiate(allow, transform.position + new Vector3(0, 1.5f, 0), transform.rotation);
-            obj.transform.LookAt(playerPos);
-            obj.GetComponent<Rigidbody>().AddForce((playerPos - enemyPos) * 100);
+            Instantiate(allow, transform.position + new Vector3(1, 1.5f, 1), transform.rotation).GetComponent<Rigidbody>().AddForce((playerPos - enemyPos) * 100);
+            timer = 0;
         }
-
     }
+            
 
 	// Playerにダメージを与えられた時
 	void Damage(){
@@ -52,12 +57,13 @@ public class EnemyScript : MonoBehaviour {
 
 		// 体力がゼロになったら
 		if (enemyHP == 0) {
-			if (Bomb) {
-				// 爆発を起こす
-				Instantiate (Bomb, transform.position, transform.rotation);
-			}
-			// 敵を倒した数を1増やす
-			ScoreManager.instance.enemyCount++;
+            //if (Bomb) {
+            // 爆発を起こす
+            //Instantiate (Bomb, transform.position, transform.rotation);
+            //}
+            // 敵を倒した数を1増やす
+            Instantiate(rice, transform.position, Quaternion.identity);
+            ScoreManager.instance.enemyCount++;
 			Destroy (this.gameObject); //自分をしょうめつさせる
             gameObject.SetActive(false);
 
