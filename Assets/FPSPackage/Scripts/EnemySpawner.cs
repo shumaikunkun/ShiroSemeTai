@@ -12,7 +12,7 @@ public class EnemySpawner : MonoBehaviour {
     void Update()
     {
         //プレイヤーのHPが0になったら生成をやめる
-        if (GameObject.Find("Player").GetComponent<PlayerScript>().playerHP > 0)
+        //if (GameObject.Find("Player").GetComponent<PlayerScript>().playerHP > 0)
         {
             timer -= Time.deltaTime; //タイマーを減らす
             if (timer < 0)  //タイマーがゼロより小さくなったら

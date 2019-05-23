@@ -6,12 +6,16 @@ using UnityEngine.SceneManagement;
 public class PlayerScript: MonoBehaviour {
 
     public const int maxplayerHP = 100;
-    public int playerHP = 100;
+    public static int playerHP = 100;
     public Text HPLabel;
 
-    public Text gameOver;
+    public static int playerEX = 0;
+    public Text EXLabel;
+
+    //public Text gameOver;
 
     public Slider slider;
+    public Slider sliderEX;
 
     //public int bulletCount = 20;  //弾の数
     //public Text bulletLabel;
@@ -20,15 +24,29 @@ public class PlayerScript: MonoBehaviour {
     //public Text reloadLabel;
 
     //　ポーズした時に表示するUIのプレハブ
-    private GameObject pauseUIPrefab;
+    //private GameObject pauseUIPrefab;
     //　ポーズUIのインスタンス
-    private GameObject pauseUIInstance;
+    //private GameObject pauseUIInstance;
+
+    public AudioClip healSound;
+    AudioSource audioSource; //音源（スピーカー）
+
+    void Start()
+    {
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.clip = healSound;
+
+            playerHP = 100;
+            playerEX = 0;
+        
+    }
 
     // ゲームの1フレームごとに呼ばれるメソッド
     void Update () {
         HPLabel.text = playerHP.ToString();
         //bulletLabel.text = "残り弾数: " + bulletCount;
         //reloadLabel.text = "リロード数: " + reloadCount;
+        if (playerEX > 30) playerEX = 0;
 
 	}
 
@@ -75,13 +93,14 @@ public class PlayerScript: MonoBehaviour {
     {
         if (col.gameObject.tag=="rice")
         {
-            for(int i = 0; i < 5; i++)  //HP5回復する
+            for(int i = 0; i < 3; i++)  //HP3回復する
             {
                 if (playerHP < 100)
                 {
                     playerHP += 1;
                     slider.value = playerHP;
                     HPLabel.text = playerHP.ToString();
+                    audioSource.Play();
                 }
             }
             Destroy(col.gameObject);
@@ -90,6 +109,17 @@ public class PlayerScript: MonoBehaviour {
         {
             playerHP = 100;
             Destroy(col.gameObject);
+        }
+        if (col.gameObject.tag == "exp")  
+        {
+            playerEX += 1;
+            sliderEX.value = playerEX;
+            EXLabel.text = playerEX.ToString();
+            Destroy(col.gameObject);
+        }
+        if (col.gameObject.tag == "Enter")  //城の中へ
+        {
+            SceneManager.LoadScene("1floor");
         }
     }
 

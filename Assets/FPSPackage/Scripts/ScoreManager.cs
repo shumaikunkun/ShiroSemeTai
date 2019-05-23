@@ -30,7 +30,7 @@ public class ScoreManager : MonoBehaviour {
 	void Update () {
 		if (scoreLabel) {
 			// 倒した数をTextに表示する。
-			scoreLabel.text =   enemyCount.ToString ();
+			scoreLabel.text =  enemyCount.ToString ();
 		} else {
 			if (GameObject.Find ("EnemyCount")) {
 				scoreLabel = GameObject.Find ("EnemyCount").GetComponent<Text>();

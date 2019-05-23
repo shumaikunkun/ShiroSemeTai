@@ -16,7 +16,7 @@ public class AllowScript : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        if (timer >= 2) Destroy(this.gameObject);
+        if (timer >= 2) Destroy(this.gameObject);  //生まれてから２秒で消滅
     }
     void OnTriggerEnter(Collider col)
     {

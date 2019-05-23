@@ -20,7 +20,7 @@ public class MovingEnemyScript : MonoBehaviour {
         EnemyScript enemyScript = GetComponent<EnemyScript>();  //他のソースコードから参照
         
         agent.SetDestination(player.transform.position);
-        if (enemyScript.distance > 8 && enemyScript.distance < 30 )  //遠すぎず近すぎずの位置で敵が止まる
+        if (enemyScript.distance > 5 && enemyScript.distance < 20 )  //遠すぎず近すぎずの位置で敵が止まる
         {
             agent.speed=3.5f;  // 目的地をプレイヤーに設定する。
         }
