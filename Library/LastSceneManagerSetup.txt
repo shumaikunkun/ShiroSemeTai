@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/FPSPackage/Scenes/Start.unity
+- path: Assets/MyPckages/Scenes/1floor.unity
   isLoaded: 1
   isActive: 1
